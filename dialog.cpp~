@@ -239,15 +239,8 @@ void PingThread(void *p) {
 	int dt;
 	int anyset = 0;
 
-        struct timespec time_in_ns;
-
 	NumPing = 0;
-	// gettimeofday(&lasttime, reinterpret_cast<struct timezone *>(0));
-
-        clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
-
-        lasttime.tv_sec = time_in_ns.tv_sec;
-        lasttime.tv_usec = time_in_ns.tv_nsec / 1000;
+	gettimeofday(&lasttime, reinterpret_cast<struct timezone *>(0));
 
 	while (wmtrdlg->start) {
 		dt = wmtrnet.CalcDeltatime();
@@ -269,12 +262,7 @@ void PingThread(void *p) {
 		} else {
 			//wmtrdlg->DisplayRedraw();
 
-			// gettimeofday(&thistime, reinterpret_cast<struct timezone *>(0));
-
-                        clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
-
-                        thistime.tv_sec = time_in_ns.tv_sec;
-                        thistime.tv_usec = time_in_ns.tv_nsec / 1000;
+			gettimeofday(&thistime, reinterpret_cast<struct timezone *>(0));
 
 			if ((thistime.tv_sec > (lasttime.tv_sec + intervaltime.tv_sec)) ||
 			                ((thistime.tv_sec == (lasttime.tv_sec + intervaltime.tv_sec)) &&

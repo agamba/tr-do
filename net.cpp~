@@ -64,8 +64,6 @@ void WinMTRNet::SendQuery(int index) {
 	char packet[MAXPACKET];
 	struct ICMPHeader *icmp;
 
-        struct timespec time_in_ns;
-
 	if (packetsize < MINPACKET) packetsize = MINPACKET;
 	if (packetsize > MAXPACKET) packetsize = MAXPACKET;
 
@@ -86,15 +84,7 @@ void WinMTRNet::SendQuery(int index) {
 	icmp->id = getpid();
 	icmp->sequence = GetNewSequence(index);
 	icmp->checksum = Checksum((unsigned short*)icmp, packetsize);
-
-	// gettimeofday (&(sequence[icmp->sequence].time), NULL);
-
-        clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
-
-        sequence[icmp->sequence].time.tv_sec = time_in_ns.tv_sec;
-        sequence[icmp->sequence].time.tv_usec = time_in_ns.tv_nsec / 1000;
-        
-
+	gettimeofday(&sequence[icmp->sequence].time, NULL);
 	sendto(sendsock, packet, packetsize , 0,(struct sockaddr *)&remoteaddress,
 	       sizeof(remoteaddress));
 }
@@ -155,16 +145,7 @@ void WinMTRNet::ProcessReturn() {
 	struct ICMPHeader *header;
 	struct timeval now;
 
-        struct timespec time_in_ns;
-
-	// gettimeofday(&now, NULL);
-
-        clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
-
-        now.tv_sec = time_in_ns.tv_sec;
-        now.tv_usec = time_in_ns.tv_nsec / 1000;
-
-
+	gettimeofday(&now, NULL);
 	fromaddrsize = sizeof(fromaddr);
 	num = recvfrom(recvsock, packet, 2048, 0,
 	               (struct sockaddr *)&fromaddr, &fromaddrsize);
