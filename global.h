@@ -136,6 +136,11 @@ const int MTR_COL_LENGTH[ MTR_NR_COLS ] = {
 // extern "C" {
 //	int gettimeofday(struct timeval* tv, struct timezone *tz);
 // }
+typedef int clockid_t;
+#ifndef CLOCK_MONOTONIC
+#define CLOCK_MONOTONIC 1
+#endif
+
 extern "C" {
         int clock_gettime (clockid_t clk_id, struct timespec *tp);
 }
