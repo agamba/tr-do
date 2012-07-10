@@ -1,0 +1,115 @@
+\hypertarget{classWinMTRDialog}{
+\section{WinMTRDialog Class Reference}
+\label{classWinMTRDialog}\index{WinMTRDialog@{WinMTRDialog}}
+}
+{\tt \#include $<$dialog.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{classWinMTRDialog_fc72d03cb4470336153dabf4cd46443a}{
+int \textbf{InitMTRNet} ()}
+\label{classWinMTRDialog_fc72d03cb4470336153dabf4cd46443a}
+
+\item 
+\hypertarget{classWinMTRDialog_995cf3af267a41b107f0a96bdd2993b7}{
+int \hyperlink{classWinMTRDialog_995cf3af267a41b107f0a96bdd2993b7}{DisplayRedraw} ()}
+\label{classWinMTRDialog_995cf3af267a41b107f0a96bdd2993b7}
+
+\begin{CompactList}\small\item\em show tabular traceroute data in original WinMTR format \item\end{CompactList}\item 
+\hypertarget{classWinMTRDialog_b2a96ff96df945607d22d696b0018f93}{
+int \hyperlink{classWinMTRDialog_b2a96ff96df945607d22d696b0018f93}{ShowTraceTable} ()}
+\label{classWinMTRDialog_b2a96ff96df945607d22d696b0018f93}
+
+\begin{CompactList}\small\item\em show the traceroute table in IXmaps TrGen canonical format \item\end{CompactList}\item 
+\hypertarget{classWinMTRDialog_8087c87ed54fc6382edf2a7a769ec3ef}{
+void \textbf{SetHostName} (const char $\ast$host)}
+\label{classWinMTRDialog_8087c87ed54fc6382edf2a7a769ec3ef}
+
+\item 
+\hypertarget{classWinMTRDialog_956a3392d868358b474949bb92e762c3}{
+void \textbf{SetInterval} (float i)}
+\label{classWinMTRDialog_956a3392d868358b474949bb92e762c3}
+
+\item 
+\hypertarget{classWinMTRDialog_de87db1396663df35286539376808445}{
+void \textbf{SetPingSize} (int ps)}
+\label{classWinMTRDialog_de87db1396663df35286539376808445}
+
+\item 
+\hypertarget{classWinMTRDialog_6b7079438a9f0fa04c29ef10fa9a74d0}{
+void \textbf{SetUseDNS} (BOOL udns)}
+\label{classWinMTRDialog_6b7079438a9f0fa04c29ef10fa9a74d0}
+
+\item 
+\hypertarget{classWinMTRDialog_2789006e17bc99c8366ad5ac01a056d0}{
+void \hyperlink{classWinMTRDialog_2789006e17bc99c8366ad5ac01a056d0}{SetMaxAttempts} (int nprobes)}
+\label{classWinMTRDialog_2789006e17bc99c8366ad5ac01a056d0}
+
+\begin{CompactList}\small\item\em set the number of probes for each hop \item\end{CompactList}\item 
+void \hyperlink{classWinMTRDialog_b7ff762dde134250e3b713d8d56904ae}{errMsg} (const char $\ast$msg)
+\begin{CompactList}\small\item\em display an error message on standard output \item\end{CompactList}\item 
+\hypertarget{classWinMTRDialog_214d0f569bfbed8035d650f5341967e4}{
+int \textbf{restart} (const char $\ast$Hostname)}
+\label{classWinMTRDialog_214d0f569bfbed8035d650f5341967e4}
+
+\end{CompactItemize}
+\subsection*{Public Attributes}
+\begin{CompactItemize}
+\item 
+\hypertarget{classWinMTRDialog_e14c6be909f2819cf806cbfac1129b9c}{
+bool \hyperlink{classWinMTRDialog_e14c6be909f2819cf806cbfac1129b9c}{start}}
+\label{classWinMTRDialog_e14c6be909f2819cf806cbfac1129b9c}
+
+\begin{CompactList}\small\item\em set to enable traceroute \item\end{CompactList}\item 
+\hypertarget{classWinMTRDialog_fce2198fabd9a890245f5d7c84a7e892}{
+double \hyperlink{classWinMTRDialog_fce2198fabd9a890245f5d7c84a7e892}{interval}}
+\label{classWinMTRDialog_fce2198fabd9a890245f5d7c84a7e892}
+
+\begin{CompactList}\small\item\em wait time for a batch of pings, nominally 1.0 seconds \item\end{CompactList}\item 
+\hypertarget{classWinMTRDialog_da267f51c737602e0583bf84abc440a6}{
+int \hyperlink{classWinMTRDialog_da267f51c737602e0583bf84abc440a6}{pingsize}}
+\label{classWinMTRDialog_da267f51c737602e0583bf84abc440a6}
+
+\begin{CompactList}\small\item\em size of the outgoing ping probe IPv4+ICMP+payload \item\end{CompactList}\item 
+\hypertarget{classWinMTRDialog_7933c0b7447e103e3d29ec76d025f730}{
+bool \textbf{useDNS}}
+\label{classWinMTRDialog_7933c0b7447e103e3d29ec76d025f730}
+
+\item 
+\hypertarget{classWinMTRDialog_4f8bc30cdc757fe95e0aa0b978fff6ac}{
+int \hyperlink{classWinMTRDialog_4f8bc30cdc757fe95e0aa0b978fff6ac}{max\_\-att}}
+\label{classWinMTRDialog_4f8bc30cdc757fe95e0aa0b978fff6ac}
+
+\begin{CompactList}\small\item\em number of ping batches to run \item\end{CompactList}\end{CompactItemize}
+\subsection*{Protected Attributes}
+\begin{CompactItemize}
+\item 
+\hypertarget{classWinMTRDialog_22740cfd271e0cdd60b0b208e6d0f679}{
+char \textbf{defaulthostname} \mbox{[}1000\mbox{]}}
+\label{classWinMTRDialog_22740cfd271e0cdd60b0b208e6d0f679}
+
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+pseudo-dialog. It was a real dialog in the original WinMTR. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classWinMTRDialog_b7ff762dde134250e3b713d8d56904ae}{
+\index{WinMTRDialog@{WinMTRDialog}!errMsg@{errMsg}}
+\index{errMsg@{errMsg}!WinMTRDialog@{WinMTRDialog}}
+\subsubsection[errMsg]{\setlength{\rightskip}{0pt plus 5cm}void WinMTRDialog::errMsg (const char $\ast$ {\em msg})}}
+\label{classWinMTRDialog_b7ff762dde134250e3b713d8d56904ae}
+
+
+display an error message on standard output 
+
+\begin{Desc}
+\item[\hyperlink{todo__todo000001}{Todo}]\{ perhaps this should output to std::cerr \} \end{Desc}
+
+
+The documentation for this class was generated from the following files:\begin{CompactItemize}
+\item 
+dialog.h\item 
+dialog.cpp\end{CompactItemize}

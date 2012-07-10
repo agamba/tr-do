@@ -1,0 +1,90 @@
+\hypertarget{structs__nethost}{
+\section{s\_\-nethost Struct Reference}
+\label{structs__nethost}\index{s\_\-nethost@{s\_\-nethost}}
+}
+characteristics common to a specific hop count in a repeated traceroute  
+
+
+{\tt \#include $<$net.h$>$}
+
+\subsection*{Public Attributes}
+\begin{CompactItemize}
+\item 
+\hypertarget{structs__nethost_a4cc3fb1c98245d2ec001d0f0e1b4c59}{
+\_\-\_\-int32 \hyperlink{structs__nethost_a4cc3fb1c98245d2ec001d0f0e1b4c59}{addr}}
+\label{structs__nethost_a4cc3fb1c98245d2ec001d0f0e1b4c59}
+
+\begin{CompactList}\small\item\em the last known IP address (0=unknown) \item\end{CompactList}\item 
+int \hyperlink{structs__nethost_badb6cdfcc0c2350885aa95b47aa7e68}{inconsist}
+\item 
+\hypertarget{structs__nethost_8cdffb89972f526b0c55067e0020b26d}{
+int \hyperlink{structs__nethost_8cdffb89972f526b0c55067e0020b26d}{xmit}}
+\label{structs__nethost_8cdffb89972f526b0c55067e0020b26d}
+
+\begin{CompactList}\small\item\em number of outgoing packets already sent with the associated TTL \item\end{CompactList}\item 
+\hypertarget{structs__nethost_0b6bb2ffc189fb7206a4c34a518d9150}{
+int \hyperlink{structs__nethost_0b6bb2ffc189fb7206a4c34a518d9150}{returned}}
+\label{structs__nethost_0b6bb2ffc189fb7206a4c34a518d9150}
+
+\begin{CompactList}\small\item\em number of outgoing packets which elicited a response \item\end{CompactList}\item 
+\hypertarget{structs__nethost_7265e41bd1c39f0ba1dd948339c5aced}{
+unsigned long \hyperlink{structs__nethost_7265e41bd1c39f0ba1dd948339c5aced}{total}}
+\label{structs__nethost_7265e41bd1c39f0ba1dd948339c5aced}
+
+\begin{CompactList}\small\item\em total of Round Trip Times for all replies in microseconds \item\end{CompactList}\item 
+\hypertarget{structs__nethost_7b95d9c7c59322b84a96ca2a48cda2b8}{
+int \hyperlink{structs__nethost_7b95d9c7c59322b84a96ca2a48cda2b8}{last}}
+\label{structs__nethost_7b95d9c7c59322b84a96ca2a48cda2b8}
+
+\begin{CompactList}\small\item\em Round Trip Time for last received reply in microseconds. \item\end{CompactList}\item 
+\hypertarget{structs__nethost_5700c30e32a122a6d033eeba9c807a37}{
+int \hyperlink{structs__nethost_5700c30e32a122a6d033eeba9c807a37}{best}}
+\label{structs__nethost_5700c30e32a122a6d033eeba9c807a37}
+
+\begin{CompactList}\small\item\em lowest Round Trip Time for all received replies \item\end{CompactList}\item 
+\hypertarget{structs__nethost_434a107e315ea1affe2cf00beba8a2b4}{
+int \hyperlink{structs__nethost_434a107e315ea1affe2cf00beba8a2b4}{worst}}
+\label{structs__nethost_434a107e315ea1affe2cf00beba8a2b4}
+
+\begin{CompactList}\small\item\em highest Round Trip Time for all received replies \item\end{CompactList}\item 
+int \hyperlink{structs__nethost_cedbbf6771d0cf034f5a31cccc7e41ec}{transit}
+\item 
+\hypertarget{structs__nethost_5562884958a8e87c3f8e15ff673df81c}{
+int \hyperlink{structs__nethost_5562884958a8e87c3f8e15ff673df81c}{saved} \mbox{[}SAVED\_\-PINGS\mbox{]}}
+\label{structs__nethost_5562884958a8e87c3f8e15ff673df81c}
+
+\begin{CompactList}\small\item\em most recent saved RTT is last in the array, -1=pending reply, -2=never sent \item\end{CompactList}\item 
+\hypertarget{structs__nethost_8106e956c21d1741e01b7c5d988cdf2b}{
+char \hyperlink{structs__nethost_8106e956c21d1741e01b7c5d988cdf2b}{name} \mbox{[}255\mbox{]}}
+\label{structs__nethost_8106e956c21d1741e01b7c5d988cdf2b}
+
+\begin{CompactList}\small\item\em hostname or dotted-quad if not resolvable, or ICMP code or empty \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+characteristics common to a specific hop count in a repeated traceroute 
+
+\subsection{Member Data Documentation}
+\hypertarget{structs__nethost_badb6cdfcc0c2350885aa95b47aa7e68}{
+\index{s\_\-nethost@{s\_\-nethost}!inconsist@{inconsist}}
+\index{inconsist@{inconsist}!s_nethost@{s\_\-nethost}}
+\subsubsection[inconsist]{\setlength{\rightskip}{0pt plus 5cm}int {\bf s\_\-nethost::inconsist}}}
+\label{structs__nethost_badb6cdfcc0c2350885aa95b47aa7e68}
+
+
+set if the IP address has ever been inconsistent \begin{Desc}
+\item[\hyperlink{todo__todo000002}{Todo}]\{ make inconsist a bool \} \end{Desc}
+\hypertarget{structs__nethost_cedbbf6771d0cf034f5a31cccc7e41ec}{
+\index{s\_\-nethost@{s\_\-nethost}!transit@{transit}}
+\index{transit@{transit}!s_nethost@{s\_\-nethost}}
+\subsubsection[transit]{\setlength{\rightskip}{0pt plus 5cm}int {\bf s\_\-nethost::transit}}}
+\label{structs__nethost_cedbbf6771d0cf034f5a31cccc7e41ec}
+
+
+1=in transit, 0=reply received \begin{Desc}
+\item[\hyperlink{todo__todo000003}{Todo}]\{ make transit a bool \} \end{Desc}
+
+
+The documentation for this struct was generated from the following file:\begin{CompactItemize}
+\item 
+net.h\end{CompactItemize}

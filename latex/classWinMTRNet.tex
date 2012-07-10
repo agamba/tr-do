@@ -1,0 +1,225 @@
+\hypertarget{classWinMTRNet}{
+\section{WinMTRNet Class Reference}
+\label{classWinMTRNet}\index{WinMTRNet@{WinMTRNet}}
+}
+{\tt \#include $<$net.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+int \hyperlink{classWinMTRNet_ac7beed52d6d2d07cbc139a76ce8e3c2}{Preopen} (\hyperlink{classWinMTRDialog}{WinMTRDialog} $\ast$wp)
+\item 
+int \hyperlink{classWinMTRNet_98e9dd94f9400ea00c547669a9386fdc}{Open} (int address, int laddress)
+\item 
+\hypertarget{classWinMTRNet_f6c26d1d63cf2526d51e02b3e5b48ab5}{
+void \hyperlink{classWinMTRNet_f6c26d1d63cf2526d51e02b3e5b48ab5}{Reset} ()}
+\label{classWinMTRNet_f6c26d1d63cf2526d51e02b3e5b48ab5}
+
+\begin{CompactList}\small\item\em (re)-initialize all saved state \item\end{CompactList}\item 
+\hypertarget{classWinMTRNet_2aa4e6997c3b72ac438ee51319cba58c}{
+void \hyperlink{classWinMTRNet_2aa4e6997c3b72ac438ee51319cba58c}{Close} ()}
+\label{classWinMTRNet_2aa4e6997c3b72ac438ee51319cba58c}
+
+\begin{CompactList}\small\item\em close open socket(s) \item\end{CompactList}\item 
+int \hyperlink{classWinMTRNet_81d1b9da7ce2c49d0b073c2413f4a564}{GetWaitFd} ()
+\begin{CompactList}\small\item\em return the file descriptor for the receive socket. \item\end{CompactList}\item 
+\hypertarget{classWinMTRNet_2a8bea7d104e21a2f2b31e1356d6106c}{
+void \hyperlink{classWinMTRNet_2a8bea7d104e21a2f2b31e1356d6106c}{ProcessReturn} ()}
+\label{classWinMTRNet_2a8bea7d104e21a2f2b31e1356d6106c}
+
+\begin{CompactList}\small\item\em invoked when a packet is available on the receive socket \item\end{CompactList}\item 
+\hypertarget{classWinMTRNet_35ef2e019fefa5340dfc9e3ed06a971c}{
+int \textbf{GetLast} (int at)}
+\label{classWinMTRNet_35ef2e019fefa5340dfc9e3ed06a971c}
+
+\item 
+\hypertarget{classWinMTRNet_9ce911108cef6d446f03dac073b1943d}{
+int \textbf{GetMax} ()}
+\label{classWinMTRNet_9ce911108cef6d446f03dac073b1943d}
+
+\item 
+\hypertarget{classWinMTRNet_cb49abde3ba55593637f645ef3f533e1}{
+int \textbf{GetAddr} (int at)}
+\label{classWinMTRNet_cb49abde3ba55593637f645ef3f533e1}
+
+\item 
+\hypertarget{classWinMTRNet_c8ea3d1edd080552a09f889f56ec97e9}{
+const char $\ast$ \textbf{GetConsistency} (int at)}
+\label{classWinMTRNet_c8ea3d1edd080552a09f889f56ec97e9}
+
+\item 
+\hypertarget{classWinMTRNet_e1023a4eaa5e77dd1edaf93995f40a14}{
+char $\ast$ \textbf{FmtAddr} (int at, char $\ast$n)}
+\label{classWinMTRNet_e1023a4eaa5e77dd1edaf93995f40a14}
+
+\item 
+\hypertarget{classWinMTRNet_f8623a681e57a00b21d33933b84c58b1}{
+char $\ast$ \textbf{GetName} (int at, char $\ast$n)}
+\label{classWinMTRNet_f8623a681e57a00b21d33933b84c58b1}
+
+\item 
+\hypertarget{classWinMTRNet_d637e2e67d0250620c1476fabda81eb0}{
+void \textbf{SetName} (int at, char $\ast$n)}
+\label{classWinMTRNet_d637e2e67d0250620c1476fabda81eb0}
+
+\item 
+\hypertarget{classWinMTRNet_05722cf863d2ae5f535daad300d78c41}{
+int \textbf{GetPercent} (int at)}
+\label{classWinMTRNet_05722cf863d2ae5f535daad300d78c41}
+
+\item 
+\hypertarget{classWinMTRNet_eb3de00d68ad47df69bbe2789516c2e8}{
+int \textbf{GetBest} (int at)}
+\label{classWinMTRNet_eb3de00d68ad47df69bbe2789516c2e8}
+
+\item 
+\hypertarget{classWinMTRNet_dbb2bb5b5cd882d6a0aed7ce7c2e13b7}{
+int \textbf{GetWorst} (int at)}
+\label{classWinMTRNet_dbb2bb5b5cd882d6a0aed7ce7c2e13b7}
+
+\item 
+\hypertarget{classWinMTRNet_c61a4bb5633cc2dcf26cfc606b1e6ccf}{
+int \textbf{GetAvg} (int at)}
+\label{classWinMTRNet_c61a4bb5633cc2dcf26cfc606b1e6ccf}
+
+\item 
+int \hyperlink{classWinMTRNet_f12b703c5d313be05f98316c720ce808}{SendBatch} ()
+\item 
+\hypertarget{classWinMTRNet_c07a4aa12873781e06b03d9282ccc84b}{
+void \hyperlink{classWinMTRNet_c07a4aa12873781e06b03d9282ccc84b}{EndTransit} ()}
+\label{classWinMTRNet_c07a4aa12873781e06b03d9282ccc84b}
+
+\begin{CompactList}\small\item\em mark all entries in host table as completed (no longer in transit) \item\end{CompactList}\item 
+\hypertarget{classWinMTRNet_e5b56522d653d3f3478da67e28fa8027}{
+int \hyperlink{classWinMTRNet_e5b56522d653d3f3478da67e28fa8027}{CalcDeltatime} ()}
+\label{classWinMTRNet_e5b56522d653d3f3478da67e28fa8027}
+
+\begin{CompactList}\small\item\em calculate Deltatime? as the WaitTime divided by numhosts, in microseconds \item\end{CompactList}\item 
+\hypertarget{classWinMTRNet_2fcd7c0312f298e0bff9fb38e04436ee}{
+int \textbf{GetReturned} (int at)}
+\label{classWinMTRNet_2fcd7c0312f298e0bff9fb38e04436ee}
+
+\item 
+\hypertarget{classWinMTRNet_5861925957509eb4d204170a735d71c7}{
+int \textbf{GetXmit} (int at)}
+\label{classWinMTRNet_5861925957509eb4d204170a735d71c7}
+
+\item 
+\hypertarget{classWinMTRNet_94d93285a666841e088bf53d9de05389}{
+int \textbf{GetTransit} (int at)}
+\label{classWinMTRNet_94d93285a666841e088bf53d9de05389}
+
+\item 
+\hypertarget{classWinMTRNet_73d2f412eaf1fa078e64e5dca184a314}{
+int $\ast$ \textbf{GetSavedPings} (int at)}
+\label{classWinMTRNet_73d2f412eaf1fa078e64e5dca184a314}
+
+\item 
+\hypertarget{classWinMTRNet_cf30bb1acb859892bc02021c36f79868}{
+int \textbf{GetNumHosts} ()}
+\label{classWinMTRNet_cf30bb1acb859892bc02021c36f79868}
+
+\item 
+\hypertarget{classWinMTRNet_708e722ceb3e03a1df35d7440cf6c41d}{
+BOOL \textbf{FullLoop} ()}
+\label{classWinMTRNet_708e722ceb3e03a1df35d7440cf6c41d}
+
+\item 
+void \hyperlink{classWinMTRNet_1c19487407ac366b7f5f07bf78b183d6}{SaveXmit} (int at)
+\item 
+void \hyperlink{classWinMTRNet_7d99bed3982761bdcaea919af7c84e18}{SaveReturn} (int at, int seq, int ms)
+\end{CompactItemize}
+\subsection*{Public Attributes}
+\begin{CompactItemize}
+\item 
+\hypertarget{classWinMTRNet_8c6600f47b901d17e3c1b755aaf494de}{
+float \textbf{WaitTime}}
+\label{classWinMTRNet_8c6600f47b901d17e3c1b755aaf494de}
+
+\item 
+\hypertarget{classWinMTRNet_19a20d73e232c23259674d095c5437ec}{
+\hyperlink{classWinMTRDialog}{WinMTRDialog} $\ast$ \textbf{wmtrdlg}}
+\label{classWinMTRNet_19a20d73e232c23259674d095c5437ec}
+
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Network operations 
+
+\subsection{Member Function Documentation}
+\hypertarget{classWinMTRNet_ac7beed52d6d2d07cbc139a76ce8e3c2}{
+\index{WinMTRNet@{WinMTRNet}!Preopen@{Preopen}}
+\index{Preopen@{Preopen}!WinMTRNet@{WinMTRNet}}
+\subsubsection[Preopen]{\setlength{\rightskip}{0pt plus 5cm}int WinMTRNet::Preopen ({\bf WinMTRDialog} $\ast$ {\em wp})}}
+\label{classWinMTRNet_ac7beed52d6d2d07cbc139a76ce8e3c2}
+
+
+initialization \begin{Desc}
+\item[Returns:]-1 if unable to set up socket, otherwise 0 \end{Desc}
+\hypertarget{classWinMTRNet_98e9dd94f9400ea00c547669a9386fdc}{
+\index{WinMTRNet@{WinMTRNet}!Open@{Open}}
+\index{Open@{Open}!WinMTRNet@{WinMTRNet}}
+\subsubsection[Open]{\setlength{\rightskip}{0pt plus 5cm}int WinMTRNet::Open (int {\em address}, \/  int {\em laddress})}}
+\label{classWinMTRNet_98e9dd94f9400ea00c547669a9386fdc}
+
+
+reset all saved state and set local and remote addresses \begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em address}]is where we are tracerouting to \item[{\em laddress}]is our local IP address \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]always 0 \end{Desc}
+\begin{Desc}
+\item[\hyperlink{todo__todo000005}{Todo}]\{ make this void \} \end{Desc}
+\hypertarget{classWinMTRNet_81d1b9da7ce2c49d0b073c2413f4a564}{
+\index{WinMTRNet@{WinMTRNet}!GetWaitFd@{GetWaitFd}}
+\index{GetWaitFd@{GetWaitFd}!WinMTRNet@{WinMTRNet}}
+\subsubsection[GetWaitFd]{\setlength{\rightskip}{0pt plus 5cm}int WinMTRNet::GetWaitFd ()}}
+\label{classWinMTRNet_81d1b9da7ce2c49d0b073c2413f4a564}
+
+
+return the file descriptor for the receive socket. 
+
+\begin{Desc}
+\item[See also:]PingThread \end{Desc}
+\hypertarget{classWinMTRNet_f12b703c5d313be05f98316c720ce808}{
+\index{WinMTRNet@{WinMTRNet}!SendBatch@{SendBatch}}
+\index{SendBatch@{SendBatch}!WinMTRNet@{WinMTRNet}}
+\subsubsection[SendBatch]{\setlength{\rightskip}{0pt plus 5cm}int WinMTRNet::SendBatch ()}}
+\label{classWinMTRNet_f12b703c5d313be05f98316c720ce808}
+
+
+send one ping probe in the current batch \begin{Desc}
+\item[Returns:]1 if we are at the end of the batch\end{Desc}
+Send a ping in the current batch, and then decide if we are at the end of the batch. Each batch consists of a run of pings with ascending Time To Live (TTL) values, and goes until there is heuristic evidence that the destination host is going to be reached, or that a suitably large run of non-responses will have been encountered, or the TTL value has reached the maximum limit. \hypertarget{classWinMTRNet_1c19487407ac366b7f5f07bf78b183d6}{
+\index{WinMTRNet@{WinMTRNet}!SaveXmit@{SaveXmit}}
+\index{SaveXmit@{SaveXmit}!WinMTRNet@{WinMTRNet}}
+\subsubsection[SaveXmit]{\setlength{\rightskip}{0pt plus 5cm}void WinMTRNet::SaveXmit (int {\em at})}}
+\label{classWinMTRNet_1c19487407ac366b7f5f07bf78b183d6}
+
+
+reserve a free entry at the end of the RTT saved table \begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em at}]is the hop count (TTL-1) starting at 0 \end{description}
+\end{Desc}
+\hypertarget{classWinMTRNet_7d99bed3982761bdcaea919af7c84e18}{
+\index{WinMTRNet@{WinMTRNet}!SaveReturn@{SaveReturn}}
+\index{SaveReturn@{SaveReturn}!WinMTRNet@{WinMTRNet}}
+\subsubsection[SaveReturn]{\setlength{\rightskip}{0pt plus 5cm}void WinMTRNet::SaveReturn (int {\em at}, \/  int {\em seq}, \/  int {\em ms})}}
+\label{classWinMTRNet_7d99bed3982761bdcaea919af7c84e18}
+
+
+save a Round Trip Time \begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em at}]is the 0-based hop count (varies fastest) \item[{\em seq}]is which batch of pings is being done (varies slowest) \item[{\em ms}]is the Round Trip Time in microseconds \end{description}
+\end{Desc}
+
+
+The documentation for this class was generated from the following files:\begin{CompactItemize}
+\item 
+net.h\item 
+net.cpp\end{CompactItemize}

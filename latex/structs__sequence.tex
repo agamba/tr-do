@@ -1,0 +1,49 @@
+\hypertarget{structs__sequence}{
+\section{s\_\-sequence Struct Reference}
+\label{structs__sequence}\index{s\_\-sequence@{s\_\-sequence}}
+}
+a collection of these relates incoming reply packets to what was sent  
+
+
+{\tt \#include $<$net.h$>$}
+
+\subsection*{Public Attributes}
+\begin{CompactItemize}
+\item 
+\hypertarget{structs__sequence_f1371408c6fc56b8755249cf8d2a5db3}{
+int \hyperlink{structs__sequence_f1371408c6fc56b8755249cf8d2a5db3}{index}}
+\label{structs__sequence_f1371408c6fc56b8755249cf8d2a5db3}
+
+\begin{CompactList}\small\item\em is the hop number (TTL-1) starting from 0 \item\end{CompactList}\item 
+int \hyperlink{structs__sequence_23243cbea1f63fecfb2c0fb863e8d8d6}{transit}
+\item 
+\hypertarget{structs__sequence_1d9d66ef454f719fc13cad810a4e9de9}{
+int \hyperlink{structs__sequence_1d9d66ef454f719fc13cad810a4e9de9}{saved\_\-seq}}
+\label{structs__sequence_1d9d66ef454f719fc13cad810a4e9de9}
+
+\begin{CompactList}\small\item\em number of outgoing packets already sent with the associated TTL \item\end{CompactList}\item 
+\hypertarget{structs__sequence_b48045a227e47d0d52bf026a1c7b857d}{
+struct timeval \hyperlink{structs__sequence_b48045a227e47d0d52bf026a1c7b857d}{time}}
+\label{structs__sequence_b48045a227e47d0d52bf026a1c7b857d}
+
+\begin{CompactList}\small\item\em when the outgoing packet was sent \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+a collection of these relates incoming reply packets to what was sent 
+
+\subsection{Member Data Documentation}
+\hypertarget{structs__sequence_23243cbea1f63fecfb2c0fb863e8d8d6}{
+\index{s\_\-sequence@{s\_\-sequence}!transit@{transit}}
+\index{transit@{transit}!s_sequence@{s\_\-sequence}}
+\subsubsection[transit]{\setlength{\rightskip}{0pt plus 5cm}int {\bf s\_\-sequence::transit}}}
+\label{structs__sequence_23243cbea1f63fecfb2c0fb863e8d8d6}
+
+
+1=in transit, 0=reply received \begin{Desc}
+\item[\hyperlink{todo__todo000004}{Todo}]\{ make transit a bool \} \end{Desc}
+
+
+The documentation for this struct was generated from the following file:\begin{CompactItemize}
+\item 
+net.h\end{CompactItemize}
