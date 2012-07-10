@@ -8,6 +8,7 @@ SRCFILES=${SRC_C_FILES} ${SRC_H_FILES} ${SRC_CPP_FILES} ${SRC_HPP_FILES} \
 OBJFILES=main.o dialog.o net.o
 UTEST=
 # LOPTS=-lstdc++ -lrt
+# LOPTS=-lstdc++
 COPTS=-g -funsigned-char -pedantic -Wall -Wpointer-arith -Wconversion\
 	-Wstrict-prototypes -Wmissing-prototypes
 DOL=$$
