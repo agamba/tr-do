@@ -146,7 +146,6 @@ int WinMTRDialog::DisplayRedraw()
 
 int WinMTRDialog::ShowTraceTable()
 {
-        int xx; // debug
 	char buf[255], nr_crt[255];
 	int nh = wmtrnet.GetMax();
 	int inconsist_count = 0;
@@ -156,15 +155,14 @@ int WinMTRDialog::ShowTraceTable()
 		const char *cons = wmtrnet.GetConsistency(i);
 		if ( *cons == 'i' )
 			inconsist_count++;
-		std::cout << buf << cons << " \n";
+		std::cout << buf << cons << " ";
 		
 		int *v = wmtrnet.GetSavedPings(i);
 		for (int j = wmtrnet.GetXmit(i); j > 0; j-- ) {
 			std::cout << " " << v[SAVED_PINGS-j];
 		}
-		std::cout << "\n\n"; // << std::endl;
-                
-                xx = 5; // debug
+		std::cout << std::endl;
+   
 	}
 
 	return inconsist_count;
@@ -241,8 +239,15 @@ void PingThread(void *p) {
 	int dt;
 	int anyset = 0;
 
+        struct timespec time_in_ns;
+
 	NumPing = 0;
-	gettimeofday(&lasttime, reinterpret_cast<struct timezone *>(0));
+	// gettimeofday(&lasttime, reinterpret_cast<struct timezone *>(0));
+
+        clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
+
+        lasttime.tv_sec = time_in_ns.tv_sec;
+        lasttime.tv_usec = time_in_ns.tv_nsec / 1000;
 
 	while (wmtrdlg->start) {
 		dt = wmtrnet.CalcDeltatime();
@@ -264,7 +269,12 @@ void PingThread(void *p) {
 		} else {
 			//wmtrdlg->DisplayRedraw();
 
-			gettimeofday(&thistime, reinterpret_cast<struct timezone *>(0));
+			// gettimeofday(&thistime, reinterpret_cast<struct timezone *>(0));
+
+                        clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
+
+                        thistime.tv_sec = time_in_ns.tv_sec;
+                        thistime.tv_usec = time_in_ns.tv_nsec / 1000;
 
 			if ((thistime.tv_sec > (lasttime.tv_sec + intervaltime.tv_sec)) ||
 			                ((thistime.tv_sec == (lasttime.tv_sec + intervaltime.tv_sec)) &&
