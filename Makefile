@@ -1,17 +1,17 @@
 SRC_C_FILES=
-SRC_H_FILES=global.h dialog.h net.h
-SRC_CPP_FILES=main.cpp dialog.cpp net.cpp
+SRC_H_FILES=global.h dialog.h net.h net80.h decode.h nethost.h
+SRC_CPP_FILES=main.cpp dialog.cpp net80.cpp decode.cpp
 SRC_HPP_FILES=
 SRC_OTH_FILES=
-SRCFILES=${SRC_C_FILES} ${SRC_H_FILES} ${SRC_CPP_FILES} ${SRC_HPP_FILES} \
+SRCFILES:=${SRC_C_FILES} ${SRC_H_FILES} ${SRC_CPP_FILES} ${SRC_HPP_FILES} \
 	${SRC_OTH_FILES}
-OBJFILES=main.o dialog.o net.o
+OBJFILES:=main.o dialog.o net80.o decode.o
 UTEST=
-# LOPTS=-lstdc++ -lrt
-# LOPTS=-lstdc++
+LOPTS=-lstdc++
 COPTS=-g -funsigned-char -pedantic -Wall -Wpointer-arith -Wconversion\
 	-Wstrict-prototypes -Wmissing-prototypes
 DOL=$$
+	
 
 .SUFFIXES: .cpp .o .c
 
@@ -22,6 +22,8 @@ DOL=$$
 	gcc -g -I. -c $<
 
 all: ${OBJFILES} wmtrcmd
+
+${OBJFILES}: ${SRCFILES}
 
 unittest:	${UTEST}
 

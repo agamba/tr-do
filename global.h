@@ -77,7 +77,7 @@ typedef unsigned int __int32;
 #define ES_SETSOCKOPT_FAIL	8	// setsockopt failed
 #define ES_BAD_HOSTNAME		9	// missing or invalid hostname
 
-#define WMTRCMD_VERSION	"0.1"
+#define WMTRCMD_VERSION	"0.2"
 #define WMTRCMD_LICENSE	"GPL - GNU Public License"
 #define WMTRCMD_ORIG_COPYRIGHT "Copyleft @2000-2002, Vasile Laurentiu Stanimir (stanimir@cr.nivis.com)"
 #define WMTRCMD_COPYRIGHT "Copyright 2009 Steve Harvey (sgh@vex.net)"
@@ -87,10 +87,10 @@ typedef unsigned int __int32;
 #define DEFAULT_DNS		TRUE
 #define DEFAULT_MAX_ATT		5
 
-#define SAVED_PINGS 100
+#define SAVED_PINGS 16
 #define MaxHost 256			//! maximum+1 number of hops, sizes host table
 //#define MaxSequence 65536
-#define MaxSequence 32767		//! maximum sequence number for ICMP headers and sizes sequence table
+#define MaxSequence 8192		//! maximum sequence number for ICMP headers and sizes sequence table
 //#define MaxSequence 5
 
 #define MAXPACKET 4096			//! maximum out-going packet size: IPv4 header + ICMP + payload
@@ -106,8 +106,9 @@ typedef unsigned int __int32;
 #define ICMP_TSTAMPREPLY	14
 
 #define ICMP_TIME_EXCEEDED	11
+#define ICMP_PARAMETER_PROBLEM	12
 
-#define ICMP_HOST_UNREACHABLE 3
+#define ICMP_HOST_UNREACHABLE	3
 
 #define MAX_UNKNOWN_HOSTS 10
 
@@ -133,26 +134,15 @@ const int MTR_COL_LENGTH[ MTR_NR_COLS ] = {
 };
 
 #if defined (linux) || defined(__APPLE__)
-// extern "C" {
-//	int gettimeofday(struct timeval* tv, struct timezone *tz);
-// }
-typedef int clockid_t;
-#ifndef CLOCK_MONOTONIC
-#define CLOCK_MONOTONIC 1
-#endif
-
-// anto commented all the declarations of gettimeofday: assumng that it i defined already
 extern "C" {
-	// Anto reverted
-//	int gettimeofday(struct timeval* tv, struct timezone *tz);
-	//int clock_gettime (clockid_t clk_id, struct timespec *tp);
+	#ifdef WIN32
+		int gettimeofday(struct timeval* tv, struct timezone *tz);
+	#endif
 }
-
 #else
-// ANTO reverted
-//int gettimeofday(struct timeval* tv, struct timezone *tz);
-
-//int clock_gettime (clockid_t clk_id, struct timespec *tp);
+	#ifdef WIN32
+		int gettimeofday(struct timeval* tv, struct timezone *tz);
+	#endif
 #endif
 
 

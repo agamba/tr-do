@@ -8,8 +8,8 @@
 //*****************************************************************************
 
 #include "global.h"
-#include "dialog.h"
 #include "net.h"
+#include "dialog.h"
 
 #include <iostream>
 
@@ -21,7 +21,7 @@ static	 char THIS_FILE[] = __FILE__;
 #endif
 
 
-WinMTRNet wmtrnet;
+// WinMTRNet wmtrnet;
 
 void PingThread(void *p);
 
@@ -38,8 +38,12 @@ WinMTRDialog::WinMTRDialog() {
 	pingsize = DEFAULT_PING_SIZE;
 	max_att = DEFAULT_MAX_ATT;
 
-	start = false;
+	wmtrnet = new WinMTRNet(this);
 
+	start = false;
+	rep_mpls = false;
+	rep_ttl = false;
+	rep_icmp_status = false;
 }
 
 void WinMTRDialog::SetHostName(const char *host) {
@@ -59,6 +63,18 @@ void WinMTRDialog::SetUseDNS(BOOL udns) {
 	useDNS = udns;
 }
 
+void WinMTRDialog::SetMPLS(bool do_mpls) {
+	rep_mpls = do_mpls;
+}
+
+void WinMTRDialog::SetTTL(bool do_ttl) {
+	rep_ttl = do_ttl;
+}
+
+void WinMTRDialog::SetICMPStatus(bool do_icmp_status) {
+	rep_icmp_status = do_icmp_status;
+}
+
 void WinMTRDialog::SetMaxAttempts(int nprobes) {
 	if ( nprobes > 0 && nprobes < 100 )
 		max_att = nprobes;
@@ -66,10 +82,15 @@ void WinMTRDialog::SetMaxAttempts(int nprobes) {
 
 
 int WinMTRDialog::restart(const char *host_name) {
-
-	start = !start;
-
+	int rc = 0;
 	SetHostName(host_name);
+#ifdef WIN32
+	rc = InitMTRNet();
+	if ( rc == 0 ) {
+		wmtrnet->DoTrace(traddr, max_att, pingsize, interval);
+	}
+#else
+	start = !start;
 	if (start) {
 		int rc = InitMTRNet();
 		if ( rc == 0 ) {
@@ -89,21 +110,22 @@ int WinMTRDialog::restart(const char *host_name) {
 	if (!start)  {
 		Sleep(1000);
 	}
-	return 0;
+#endif
+	return rc;
 }
 
 
 int WinMTRDialog::DisplayRedraw()
 {
 	char buf[255], nr_crt[255];
-	int nh = wmtrnet.GetMax();
+	int nh = wmtrnet->GetMax();
 	int inconsist_count = 0;
 	for(int i=0;i <nh ; i++) {
 
-		wmtrnet.GetName(i, buf);
-		if( (strcmp(buf,"*")==0) && wmtrnet.FullLoop())
+		wmtrnet->GetName(i, buf);
+		if( (strcmp(buf,"*")==0) && wmtrnet->FullLoop())
 			strcpy(buf,"No response from host");
-		const char *cons = wmtrnet.GetConsistency(i);
+		const char *cons = wmtrnet->GetConsistency(i);
 		if ( *cons == 'i' )
 			inconsist_count++;
 		std::cout << buf << cons << " ";
@@ -111,29 +133,29 @@ int WinMTRDialog::DisplayRedraw()
 		sprintf(nr_crt, "%d", i+1);
 		std::cout << nr_crt << " ";
 
-		sprintf(buf, "%d", wmtrnet.GetPercent(i));
+		sprintf(buf, "%d", wmtrnet->GetPercent(i));
 		std::cout << buf << " ";
 
-		sprintf(buf, "%d", wmtrnet.GetXmit(i));
+		sprintf(buf, "%d", wmtrnet->GetXmit(i));
 		std::cout << buf << " ";
 
-		sprintf(buf, "%d", wmtrnet.GetReturned(i));
+		sprintf(buf, "%d", wmtrnet->GetReturned(i));
 		std::cout << buf << " ";
 
-		sprintf(buf, "%d", wmtrnet.GetBest(i)/1000);
+		sprintf(buf, "%d", wmtrnet->GetBest(i)/1000);
 		std::cout << buf << " ";
 
-		sprintf(buf, "%d", wmtrnet.GetAvg(i)/1000);
+		sprintf(buf, "%d", wmtrnet->GetAvg(i)/1000);
 		std::cout << buf << " ";
 
-		sprintf(buf, "%d", wmtrnet.GetWorst(i)/1000);
+		sprintf(buf, "%d", wmtrnet->GetWorst(i)/1000);
 		std::cout << buf << " ";
 
-		sprintf(buf, "%d", wmtrnet.GetLast(i)/1000);
+		sprintf(buf, "%d", wmtrnet->GetLast(i)/1000);
 		std::cout << buf << " |";
 
-		int *v = wmtrnet.GetSavedPings(i);
-		for (int j = wmtrnet.GetXmit(i); j > 0; j-- ) {
+		int *v = wmtrnet->GetSavedRTTs(i);
+		for (int j = wmtrnet->GetXmit(i); j > 0; j-- ) {
 			std::cout << " " << v[SAVED_PINGS-j];
 		}
 		std::cout << std::endl;
@@ -147,20 +169,49 @@ int WinMTRDialog::DisplayRedraw()
 int WinMTRDialog::ShowTraceTable()
 {
 	char buf[255], nr_crt[255];
-	int nh = wmtrnet.GetMax();
+	int nh = wmtrnet->GetMax();
 	int inconsist_count = 0;
 	for(int i=0;i <nh ; i++) {
 
-		wmtrnet.FmtAddr(i, buf);
-		const char *cons = wmtrnet.GetConsistency(i);
+		wmtrnet->FmtAddr(i, buf);
+		const char *cons = wmtrnet->GetConsistency(i);
 		if ( *cons == 'i' )
 			inconsist_count++;
 		std::cout << buf << cons << " ";
 		
-		int *v = wmtrnet.GetSavedPings(i);
-		for (int j = wmtrnet.GetXmit(i); j > 0; j-- ) {
-			std::cout << " " << v[SAVED_PINGS-j];
+		int *rv = wmtrnet->GetSavedRTTs(i);
+		__int8 *tv = wmtrnet->GetSavedTTLs(i);
+		MPLSStack *mv = wmtrnet->GetSavedMPLS(i);
+#ifdef WIN32
+		int xmit = wmtrnet->GetXmit(i);
+		for (int j = 0; j < xmit; j++ ) {
+			std::cout << " " << rv[j];
+			if ( rep_ttl ) {
+				std::cout << "/" << (int)tv[j];
+			}
+			if ( rep_icmp_status ) {
+				std::cout << "/" << (int)mv[j].status;
+			}
+			if ( rep_mpls ) {
+				mv[j].Format(buf, sizeof(buf));
+				std::cout << " " << buf;
+			}
 		}
+#else
+		for (int j = wmtrnet->GetXmit(i); j > 0; j-- ) {
+			std::cout << " " << rv[SAVED_PINGS-j];
+			if ( rep_ttl ) {
+				std::cout << "/" << (int)tv[SAVED_PINGS-j];
+			}
+			if ( rep_icmp_status ) {
+				std::cout << "/" << (int)mv[SAVED_PINGS-j].status;
+			}
+			if ( rep_mpls ) {
+				mv[SAVED_PINGS-j].Format(buf, sizeof(buf));
+				std::cout << " " << buf;
+			}
+		}
+#endif
 		std::cout << std::endl;
    
 	}
@@ -171,12 +222,12 @@ int WinMTRDialog::ShowTraceTable()
 int WinMTRDialog::InitMTRNet() {
 	struct hostent *host, *lhost;
 	int net_preopen_result;
-	int traddr;
-	int localaddr;
+	//made member int traddr;
+	//made member int localaddr;
 	const char *Hostname = defaulthostname;
 	//char buf[255];
 
-	net_preopen_result = wmtrnet.Preopen(this);
+	net_preopen_result = wmtrnet->Preopen(this);
 
 	if (net_preopen_result != 0) {
 		errMsg("Unable to get raw socket!");
@@ -220,7 +271,7 @@ int WinMTRDialog::InitMTRNet() {
 
 	localaddr = *(int *)lhost->h_addr;
 	// INSECURE:: sprintf(buf, "Tracing route to %s...", Hostname);
-	if (wmtrnet.Open(traddr, localaddr) != 0) {
+	if (wmtrnet->Open(traddr, localaddr) != 0) {
 		errMsg("Unable to get raw socket!");
 		return ES_RAWSOCK_FAIL;
 	}
@@ -229,6 +280,7 @@ int WinMTRDialog::InitMTRNet() {
 }
 
 
+#ifndef WIN32
 void PingThread(void *p) {
 	WinMTRDialog *wmtrdlg = (WinMTRDialog *)p;
 	fd_set readfd;
@@ -239,28 +291,21 @@ void PingThread(void *p) {
 	int dt;
 	int anyset = 0;
 
-        struct timespec time_in_ns;
-
 	NumPing = 0;
 	
-	// ANTO reverted to gettimeofday to test remove compilation error
-	gettimeofday(&lasttime, reinterpret_cast<struct timezone *>(0));
-
-        // ANTO commented this
-        //clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
-
-        lasttime.tv_sec = time_in_ns.tv_sec;
-        lasttime.tv_usec = time_in_ns.tv_nsec / 1000;
+	#ifdef WIN32
+		gettimeofday(&lasttime, reinterpret_cast<struct timezone *>(0));
+	#endif
 
 	while (wmtrdlg->start) {
-		dt = wmtrnet.CalcDeltatime();
+		dt = wmtrdlg->wmtrnet->CalcDeltatime();
 		intervaltime.tv_sec  = dt / 1000000;
 		intervaltime.tv_usec = dt % 1000000;
 
 		FD_ZERO(&readfd);
 		maxfd = 0;
 
-		netfd = wmtrnet.GetWaitFd();
+		netfd = wmtrdlg->wmtrnet->GetWaitFd();
 		FD_SET(netfd, &readfd);
 
 		if (netfd >= maxfd)
@@ -272,13 +317,7 @@ void PingThread(void *p) {
 		} else {
 			//wmtrdlg->DisplayRedraw();
 
-			// ANTO reverted 
 			gettimeofday(&thistime, reinterpret_cast<struct timezone *>(0));
-
-                        //clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
-
-                        thistime.tv_sec = time_in_ns.tv_sec;
-                        thistime.tv_usec = time_in_ns.tv_nsec / 1000;
 
 			if ((thistime.tv_sec > (lasttime.tv_sec + intervaltime.tv_sec)) ||
 			                ((thistime.tv_sec == (lasttime.tv_sec + intervaltime.tv_sec)) &&
@@ -288,7 +327,7 @@ void PingThread(void *p) {
 				lasttime = thistime;
 
 				if ( NumPing < wmtrdlg->max_att ) {
-	 				if (wmtrnet.SendBatch())
+	 				if (wmtrdlg->wmtrnet->SendBatch())
 						NumPing++;
 					//std::cout << "dlg: sent batch, NumPing=" << NumPing << std::endl;
 				} else {
@@ -321,7 +360,7 @@ void PingThread(void *p) {
 		anyset = 0;
 
 		if (FD_ISSET(netfd, &readfd)) {
-			wmtrnet.ProcessReturn();
+			wmtrdlg->wmtrnet->ProcessReturn();
 			anyset = 1;
 			//std::cout << "dlg: processed return" << std::endl;
 		}
@@ -329,9 +368,9 @@ void PingThread(void *p) {
 	//wmtrdlg->DisplayRedraw();
 
 	//std::cout << "dlg: finished" << std::endl;
-	wmtrnet.EndTransit();
+	wmtrdlg->wmtrnet->EndTransit();
 	//std::cout << "dlg: ended" << std::endl;
-	wmtrnet.Close();
+	wmtrdlg->wmtrnet->Close();
 	//std::cout << "dlg: closed" << std::endl;
 
 //#ifndef linux
@@ -339,4 +378,39 @@ void PingThread(void *p) {
 	_endthread();
 #endif
 }
+#endif
 
+#ifdef WIN32
+//debug
+#include <stdio.h>
+void WinMTRDialog::ShowDebugBuf() {
+	printf("%d\n", wmtrnet->data_len);
+	for (int i=0; i<sizeof(wmtrnet->data); i++ ) {
+		printf("%02x ", ((unsigned char *)wmtrnet->data)[i]);
+		if ( i % 16 == 15 ) {
+			putchar('\n');
+		}
+	}
+}
+
+void WinMTRDialog::SetDebugTTL(int ttl) {
+	wmtrnet->sample_info_ttl = ttl;
+}
+
+void WinMTRDialog::SetDebugOfs(int ofs) {
+	wmtrnet->sample_ofs = ofs;
+}
+#else
+void WinMTRDialog::ShowDebugBuf() {
+	;
+}
+
+void WinMTRDialog::SetDebugTTL(int ttl) {
+	;
+}
+
+void WinMTRDialog::SetDebugOfs(int ofs) {
+	;
+}
+
+#endif	// WIN32

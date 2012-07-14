@@ -5,10 +5,14 @@
 #include "dialog.h"
 #include "net.h"
 
+// debug
+#include <stdlib.h>
+
 int
 main(int argc, char **argv) {
 	const char *host_name;
 	bool verbose = false;
+	bool show_debug = false;
 	int inconsistent_count;
 #ifdef WIN32
 	WSADATA wsaData;
@@ -34,17 +38,52 @@ main(int argc, char **argv) {
 			dlg->SetMaxAttempts(nprobes);
 			break;
 
+		case 'V':
+			std::cout << WMTRCMD_VERSION << std::endl;
+			return 0;
+
 		case 'h':
 			std::cout << "WMTRcmd " << WMTRCMD_VERSION << std::endl;
 			std::cout << std::endl;
 			std::cout << "Portable, command line only version of WinMTR." << std::endl;
-			std::cout << "Use:  wmtrcmd  hostname" << std::endl;
+			std::cout << "Use:  wmtrcmd [options] hostname" << std::endl << std::endl;
+			std::cout << "Options are:" << std::endl;
+			std::cout << "  -qN   expect upto N (default " << DEFAULT_MAX_ATT << ") responses from each router" << std::endl;
+			std::cout << "  -m    report any MPLS label stacks found" << std::endl;
+			std::cout << "  -t    report response packet TTLs" << std::endl;
+			std::cout << "  -i    report ICMP RFC compliance" << std::endl;
+			std::cout << "  -V    show WMTRcmd version and exit" << std::endl;
+			std::cout << std::endl;
+			std::cout << "Output Round Trip Times are in microseconds." << std::endl;
+			std::cout << std::endl;
 			std::cout << "This program comes without any warranty, and is licenced" << std::endl;
 			std::cout << "under the GNU Public License v2 ." << std::endl;
 			return 0;
 
 		case 'v':
 			verbose = !verbose;
+			break;
+
+		case 'm':
+			dlg->SetMPLS(true);
+			break;
+
+		case 't':
+			dlg->SetTTL(true);
+			break;
+
+		case 'i':
+			dlg->SetICMPStatus(true);
+			break;
+
+		case 'T':
+			dlg->SetDebugTTL(atoi(argv[0]+2));
+			show_debug = true;
+			break;
+
+		case 'O':
+			dlg->SetDebugOfs(atoi(argv[0]+2));
+			show_debug = true;
 			break;
 
 		default:
@@ -62,86 +101,25 @@ main(int argc, char **argv) {
 	int rc = dlg->restart(host_name);
 	if ( rc != 0 )
 		return rc;
+#ifdef WIN32
+	WSACleanup();
+#endif
 	if ( verbose ) {
 		inconsistent_count = dlg->DisplayRedraw();
 	} else {
 		inconsistent_count = dlg->ShowTraceTable();
 	}
+	if ( show_debug )
+		dlg->ShowDebugBuf();
 	return (inconsistent_count > 0) ? ES_INCONSIST : ES_NORMAL;
 }
 
 #ifdef WIN32
-/*
-// int gettimeofday(struct timeval *t, struct timezone *timezone) { 
+int gettimeofday(struct timeval *t, struct timezone *timezone) { 
 	struct _timeb timebuffer;
 	_ftime( &timebuffer );
 	t->tv_sec=timebuffer.time;
 	t->tv_usec=1000*timebuffer.millitm;
 	return 0;
 }
-*/
-
-/* The following MS Windows code is from 
-   http://stackoverflow.com/questions/5404277/porting-clock-gettime-to-windows */
-
-LARGE_INTEGER
-getFILETIMEoffset()
-{
-    SYSTEMTIME s;
-    FILETIME f;
-    LARGE_INTEGER t;
-
-    s.wYear = 1970;
-    s.wMonth = 1;
-    s.wDay = 1;
-    s.wHour = 0;
-    s.wMinute = 0;
-    s.wSecond = 0;
-    s.wMilliseconds = 0;
-    SystemTimeToFileTime(&s, &f);
-    t.QuadPart = f.dwHighDateTime;
-    t.QuadPart <<= 32;
-    t.QuadPart |= f.dwLowDateTime;
-    return (t);
-}
-
-int
-clock_gettime(int X, struct timeval *tv)
-{
-    LARGE_INTEGER           t;
-    FILETIME            f;
-    double                  microseconds;
-    static LARGE_INTEGER    offset;
-    static double           frequencyToMicroseconds;
-    static int              initialized = 0;
-    static BOOL             usePerformanceCounter = 0;
-
-    if (!initialized) {
-        LARGE_INTEGER performanceFrequency;
-        initialized = 1;
-        usePerformanceCounter = QueryPerformanceFrequency(&performanceFrequency);
-        if (usePerformanceCounter) {
-            QueryPerformanceCounter(&offset);
-            frequencyToMicroseconds = (double)performanceFrequency.QuadPart / 1000000.;
-        } else {
-            offset = getFILETIMEoffset();
-            frequencyToMicroseconds = 10.;
-        }
-    }
-    if (usePerformanceCounter) QueryPerformanceCounter(&t);
-    else {
-        GetSystemTimeAsFileTime(&f);
-        t.QuadPart = f.dwHighDateTime;
-        t.QuadPart <<= 32;
-        t.QuadPart |= f.dwLowDateTime;
-    }
-
-    t.QuadPart -= offset.QuadPart;
-    microseconds = (double)t.QuadPart / frequencyToMicroseconds;
-    t.QuadPart = microseconds;
-    tv->tv_sec = t.QuadPart / 1000000;
-    tv->tv_usec = t.QuadPart % 1000000;
-    return (0);
-}
-
 #endif
