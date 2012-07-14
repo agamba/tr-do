@@ -242,9 +242,12 @@ void PingThread(void *p) {
         struct timespec time_in_ns;
 
 	NumPing = 0;
-	// gettimeofday(&lasttime, reinterpret_cast<struct timezone *>(0));
+	
+	// ANTO reverted to gettimeofday to test remove compilation error
+	gettimeofday(&lasttime, reinterpret_cast<struct timezone *>(0));
 
-        clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
+        // ANTO commented this
+        //clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
 
         lasttime.tv_sec = time_in_ns.tv_sec;
         lasttime.tv_usec = time_in_ns.tv_nsec / 1000;
@@ -269,9 +272,10 @@ void PingThread(void *p) {
 		} else {
 			//wmtrdlg->DisplayRedraw();
 
-			// gettimeofday(&thistime, reinterpret_cast<struct timezone *>(0));
+			// ANTO reverted 
+			gettimeofday(&thistime, reinterpret_cast<struct timezone *>(0));
 
-                        clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
+                        //clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
 
                         thistime.tv_sec = time_in_ns.tv_sec;
                         thistime.tv_usec = time_in_ns.tv_nsec / 1000;

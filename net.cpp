@@ -87,9 +87,10 @@ void WinMTRNet::SendQuery(int index) {
 	icmp->sequence = GetNewSequence(index);
 	icmp->checksum = Checksum((unsigned short*)icmp, packetsize);
 
-	// gettimeofday (&(sequence[icmp->sequence].time), NULL);
+	// anto reverted this
+	gettimeofday (&(sequence[icmp->sequence].time), NULL);
 
-        clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
+        //clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
 
         sequence[icmp->sequence].time.tv_sec = time_in_ns.tv_sec;
         sequence[icmp->sequence].time.tv_usec = time_in_ns.tv_nsec / 1000;
@@ -157,9 +158,11 @@ void WinMTRNet::ProcessReturn() {
 
         struct timespec time_in_ns;
 
-	// gettimeofday(&now, NULL);
+	// anto reverted this, in order to remove the definition error and test
+	gettimeofday(&now, NULL);
 
-        clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
+        // ANTO commented this
+        //clock_gettime (CLOCK_MONOTONIC, &time_in_ns);
 
         now.tv_sec = time_in_ns.tv_sec;
         now.tv_usec = time_in_ns.tv_nsec / 1000;

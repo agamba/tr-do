@@ -141,14 +141,18 @@ typedef int clockid_t;
 #define CLOCK_MONOTONIC 1
 #endif
 
+// anto commented all the declarations of gettimeofday: assumng that it i defined already
 extern "C" {
-	int clock_gettime (clockid_t clk_id, struct timespec *tp);
+	// Anto reverted
+//	int gettimeofday(struct timeval* tv, struct timezone *tz);
+	//int clock_gettime (clockid_t clk_id, struct timespec *tp);
 }
 
 #else
-// int gettimeofday(struct timeval* tv, struct timezone *tz); 
+// ANTO reverted
+//int gettimeofday(struct timeval* tv, struct timezone *tz);
 
-int clock_gettime (clockid_t clk_id, struct timespec *tp);
+//int clock_gettime (clockid_t clk_id, struct timespec *tp);
 #endif
 
 
